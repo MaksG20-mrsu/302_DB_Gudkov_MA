@@ -38,7 +38,7 @@ echo --------------------------------------------------
 sqlite3 movies_rating.db -box -echo "WITH RECURSIVE counter(n) AS (SELECT 1 UNION ALL SELECT n + 1 FROM counter WHERE n < 100) SELECT CAST((n - 1) / 10 + 1 AS TEXT) || 'x' || CAST((n - 1) % 10 + 1 AS TEXT) || '=' || CAST((((n - 1) / 10 + 1) * ((n - 1) % 10 + 1)) AS TEXT) AS multiplication_line FROM counter ORDER BY n;"
 echo " "
 
-echo "8. Все жанры из таблицы movies, по одному на строку, с помощью рекурсивного CTE."
+echo "8. Все жанры из таблицы movies, по одному на строку, с помощью рекурсивного CTE.."
 echo --------------------------------------------------
 sqlite3 movies_rating.db -box -echo "WITH RECURSIVE exploded(movie_id, remainder, current_genre) AS (SELECT id, genres || '|', NULL FROM movies UNION ALL SELECT movie_id, substr(remainder, instr(remainder, '|') + 1), substr(remainder, 1, instr(remainder, '|') - 1) FROM exploded WHERE remainder <> '') SELECT DISTINCT current_genre AS genre FROM exploded WHERE current_genre IS NOT NULL AND current_genre <> '' ORDER BY current_genre ASC;"
 echo " "
